@@ -11,6 +11,7 @@ from agents.ray_agent import RayAgent
 from agents.sb3_sched import IBSchedSB3
 from agents.sched_colran import SchedColORAN
 from agents.sched_twc import SchedTWC
+from agents.simu_rl_example import PIAgentSched
 from associations.mult_slice import MultSliceAssociation
 from associations.mult_slice_seq import MultSliceAssociationSeq
 from channels.mimic_quadriga import MimicQuadriga
@@ -23,181 +24,188 @@ from traffics.mult_slice import MultSliceTraffic
 scenarios = {
     # "hyperparam_opt_mult_slice": MultSliceAssociation,
     "mult_slice_seq": MultSliceAssociationSeq,
-    "mult_slice": MultSliceAssociation,
-    "mult_slice_overfit": MultSliceAssociation,
-    "finetune_mult_slice_seq": MultSliceAssociationSeq,
+    #"mult_slice": MultSliceAssociation,
+    #"mult_slice_overfit": MultSliceAssociation,
+    #"finetune_mult_slice_seq": MultSliceAssociationSeq,
 }
 agents = {
-    "ray_ib_sched": {
-        "class": IBSched,
-        "rl": True,
-        "train": True,
-        "load_method": "best",
-        "enable_masks": True,
-        "debug_mode": False,
-        "stochastic_policy": False,
-        "hyper_opt_algo": "asha",
-        "param_config_mode": "pre_computed",
-        "param_config_scenario": "hyperparam_opt_mult_slice",
-        "param_config_agent": "ray_ib_sched_hyper_asha_0",
-    },
-    "ray_ib_sched_default": {
-        "class": IBSched,
-        "rl": True,
-        "train": True,
-        "load_method": "best",
-        "enable_masks": True,
-        "debug_mode": False,
-        "stochastic_policy": False,
-        "hyper_opt_algo": "asha",
-        "param_config_mode": "default",
-        "param_config_scenario": "hyperparam_opt_mult_slice",
-        "param_config_agent": "ray_ib_sched_hyper_asha_0",
-    },
-    "hyper_opt_ray_ib_sched": {
-        "class": IBSched,
-        "rl": True,
-        "train": False,
-        "load_method": "trial_291_check_250",
-        "enable_masks": True,
-        "debug_mode": True,
-        "enable_base_agent": True,
-        "base_agent": "ray_ib_sched_hyper_asha_0",
-        "base_scenario": "hyperparam_opt_mult_slice",
-    },
-    "sched_twc": {
-        "class": SchedTWC,
-        "rl": True,
-        "train": True,
-        "load_method": "best",
-    },
-    "sched_coloran": {
-        "class": SchedColORAN,
-        "rl": True,
-        "train": True,
-        "load_method": "best",
-    },
-    "mapf": {"class": MAPF, "rl": False, "train": False},
-    "marr": {"class": MARR, "rl": False, "train": False},
-    "ray_ib_sched_hyper_asha": {
-        "class": IBSched,
-        "rl": True,
-        "train": True,
-        "hyper_opt_enable": True,
-        "hyper_opt_algo": "asha",
-        "load_method": "best",
-        "enable_masks": True,
-        "debug_mode": False,
-        "test": False,
-        "restore": True,
-    },
-    "finetune_sb3_sched": {
-        "class": IBSchedSB3,
-        "rl": True,
-        "train": True,
-        "enable_finetune": True,
-        "base_agent": "sb3_sched",
-        "base_scenario": "mult_slice",
-        "load_method": "best",
-    },
-    "finetune_sched_twc": {
-        "class": SchedTWC,
-        "rl": True,
-        "train": True,
-        "enable_finetune": True,
-        "base_agent": "sched_twc",
-        "base_scenario": "mult_slice",
-        "load_method": "best",
-    },
-    "scratch_sb3_sched": {
-        "class": IBSchedSB3,
-        "rl": True,
-        "train": True,
-        "load_method": "best",
-    },
-    "finetune_sched_colran": {
-        "class": SchedColORAN,
-        "rl": True,
-        "train": True,
-        "enable_finetune": True,
-        "base_agent": "sched_coloran",
-        "base_scenario": "mult_slice",
-        "load_method": "best",
-    },
-    "finetune_ray_ib_sched": {
-        "class": IBSched,
-        "rl": True,
-        "train": True,
-        "enable_finetune": True,
-        "base_agent": "ray_ib_sched_default",
-        "base_scenario": "mult_slice",
-        "load_method": "best",
-        "enable_masks": True,
-        "debug_mode": False,
-    },
-    "finetune_ray_ib_sched_overfit": {
-        "class": IBSched,
-        "rl": True,
-        "train": True,
-        "enable_finetune": True,
-        "base_agent": "ray_ib_sched_default",
-        "base_scenario": "mult_slice_overfit",
-        "load_method": "best",
-        "enable_masks": True,
-        "debug_mode": False,
-    },
-    "scratch_ray_ib_sched": {
-        "class": IBSched,
-        "rl": True,
-        "train": True,
-        "load_method": "best",
-        "enable_masks": True,
-        "debug_mode": False,
-    },
-    "base_ray_ib_sched": {
-        "class": IBSched,
-        "rl": True,
-        "train": False,
-        "load_method": "best",
-        "enable_masks": True,
-        "debug_mode": False,
-        "enable_base_agent": True,
-        "base_agent": "ray_ib_sched",
-        "base_scenario": "mult_slice",
-    },
-    "base_ray_ib_sched_non_shared": {
-        "class": IBSched,
-        "rl": True,
-        "train": False,
-        "load_method": "best",
-        "enable_masks": True,
-        "debug_mode": False,
-        "enable_base_agent": True,
-        "base_agent": "ray_ib_sched_non_shared",
-        "base_scenario": "mult_slice",
-        "shared_policies": False,
-    },
-    "scratch_ray_ib_sched_non_shared": {
-        "class": IBSched,
-        "rl": True,
-        "train": True,
-        "load_method": "best",
-        "enable_masks": True,
-        "debug_mode": False,
-        "shared_policies": False,
-    },
-    "finetune_ray_ib_sched_non_shared": {
-        "class": IBSched,
-        "rl": True,
-        "train": True,
-        "enable_finetune": True,
-        "base_agent": "ray_ib_sched_non_shared",
-        "base_scenario": "mult_slice",
-        "load_method": "best",  # Could be "best", "last" or a int number
-        "enable_masks": True,
-        "debug_mode": False,
-    },
+    # "ray_ib_sched": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": True,
+    #     "load_method": "best",
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    #     "stochastic_policy": False,
+    #     "hyper_opt_algo": "asha",
+    #     "param_config_mode": "pre_computed",
+    #     "param_config_scenario": "hyperparam_opt_mult_slice",
+    #     "param_config_agent": "ray_ib_sched_hyper_asha_0",
+    # },
+    # "ray_ib_sched_default": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": True,
+    #     "load_method": "best",
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    #     "stochastic_policy": False,
+    #     "hyper_opt_algo": "asha",
+    #     "param_config_mode": "default",
+    #     "param_config_scenario": "hyperparam_opt_mult_slice",
+    #     "param_config_agent": "ray_ib_sched_hyper_asha_0",
+    # },
+    # "hyper_opt_ray_ib_sched": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": False,
+    #     "load_method": "trial_291_check_250",
+    #     "enable_masks": True,
+    #     "debug_mode": True,
+    #     "enable_base_agent": True,
+    #     "base_agent": "ray_ib_sched_hyper_asha_0",
+    #     "base_scenario": "hyperparam_opt_mult_slice",
+    # },
+    #  "sched_twc": {
+    #      "class": SchedTWC,
+    #      "rl": True,
+    #      "train": True,
+    #      "load_method": "best",
+    # },
+     "pi_agent": {
+         "class": PIAgentSched,
+         "rl": True,
+         "train": True,
+         "load_method": "best",
+     },
+    # "sched_coloran": {
+    #     "class": SchedColORAN,
+    #     "rl": True,
+    #     "train": True,
+    #     "load_method": "best",
+    # },
+    #"mapf": {"class": MAPF, "rl": False, "train": False},
+    #"marr": {"class": MARR, "rl": False, "train": False},
+    # "ray_ib_sched_hyper_asha": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": True,
+    #     "hyper_opt_enable": True,
+    #     "hyper_opt_algo": "asha",
+    #     "load_method": "best",
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    #     "test": False,
+    #     "restore": True,
+    # },
+    # "finetune_sb3_sched": {
+    #     "class": IBSchedSB3,
+    #     "rl": True,
+    #     "train": True,
+    #     "enable_finetune": True,
+    #     "base_agent": "sb3_sched",
+    #     "base_scenario": "mult_slice",
+    #     "load_method": "best",
+    # },
+    # "finetune_sched_twc": {
+    #     "class": SchedTWC,
+    #     "rl": True,
+    #     "train": True,
+    #     "enable_finetune": True,
+    #     "base_agent": "sched_twc",
+    #     "base_scenario": "mult_slice",
+    #     "load_method": "best",
+    # },
+    # "scratch_sb3_sched": {
+    #     "class": IBSchedSB3,
+    #     "rl": True,
+    #     "train": True,
+    #     "load_method": "best",
+    # },
+    # "finetune_sched_colran": {
+    #     "class": SchedColORAN,
+    #     "rl": True,
+    #     "train": True,
+    #     "enable_finetune": True,
+    #     "base_agent": "sched_coloran",
+    #     "base_scenario": "mult_slice",
+    #     "load_method": "best",
+    # },
+    # "finetune_ray_ib_sched": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": True,
+    #     "enable_finetune": True,
+    #     "base_agent": "ray_ib_sched_default",
+    #     "base_scenario": "mult_slice",
+    #     "load_method": "best",
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    # },
+    # "finetune_ray_ib_sched_overfit": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": True,
+    #     "enable_finetune": True,
+    #     "base_agent": "ray_ib_sched_default",
+    #     "base_scenario": "mult_slice_overfit",
+    #     "load_method": "best",
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    # },
+    # "scratch_ray_ib_sched": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": True,
+    #     "load_method": "best",
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    # },
+    # "base_ray_ib_sched": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": False,
+    #     "load_method": "best",
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    #     "enable_base_agent": True,
+    #     "base_agent": "ray_ib_sched",
+    #     "base_scenario": "mult_slice",
+    # },
+    # "base_ray_ib_sched_non_shared": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": False,
+    #     "load_method": "best",
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    #     "enable_base_agent": True,
+    #     "base_agent": "ray_ib_sched_non_shared",
+    #     "base_scenario": "mult_slice",
+    #     "shared_policies": False,
+    # },
+    # "scratch_ray_ib_sched_non_shared": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": True,
+    #     "load_method": "best",
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    #     "shared_policies": False,
+    # },
+    # "finetune_ray_ib_sched_non_shared": {
+    #     "class": IBSched,
+    #     "rl": True,
+    #     "train": True,
+    #     "enable_finetune": True,
+    #     "base_agent": "ray_ib_sched_non_shared",
+    #     "base_scenario": "mult_slice",
+    #     "load_method": "best",  # Could be "best", "last" or a int number
+    #     "enable_masks": True,
+    #     "debug_mode": False,
+    # },
 }
+
 env_config_scenarios = {
     "mult_slice_seq": {
         "seed": 10,
@@ -220,121 +228,124 @@ env_config_scenarios = {
         "enable_random_episodes": True,
         "number_rollout_workers": 10,
         "agents": [
-            "mapf",
-            "marr",
-            "ray_ib_sched_default",
-            "sched_twc",
-            "sched_coloran",
+            #"mapf",
+            #"marr",
+            "pi_agent",
+            #"ray_ib_sched_default",
+            #"sched_twc",
+            #"sched_coloran",
         ],
         "number_scenarios": 10,
         "scenarios_skip_episodes": 100,
     },
-    "mult_slice": {
-        "seed": 10,
-        "seed_test": 15,
-        "channel_class": QuadrigaChannel,
-        "traffic_class": MultSliceTraffic,
-        "mobility_class": SimpleMobility,
-        "root_path": str(getcwd()),
-        "training_epochs": 5,
-        "enable_evaluation": True,
-        "initial_training_episode": 10,
-        "max_training_episodes": 190,
-        "initial_testing_episode": 0,
-        "test_episodes": 10,
-        "episode_evaluation_freq": 10,
-        "number_evaluation_episodes": 10,
-        "checkpoint_episode_freq": 10,
-        "eval_initial_env_episode": 190,
-        "save_hist": False,
-        "enable_random_episodes": True,
-        "number_rollout_workers": 10,
-        "agents": [
-            "ray_ib_sched_default",
-            "sched_twc",
-            "sched_coloran",
-            "mapf",
-            "marr",
-        ],
-    },
-    "mult_slice_overfit": {
-        "seed": 10,
-        "seed_test": 15,
-        "channel_class": QuadrigaChannel,
-        "traffic_class": MultSliceTraffic,
-        "mobility_class": SimpleMobility,
-        "root_path": str(getcwd()),
-        "training_epochs": 100,
-        "enable_evaluation": True,
-        "initial_training_episode": 0,
-        "max_training_episodes": 10,
-        "initial_testing_episode": 0,
-        "test_episodes": 10,
-        "episode_evaluation_freq": 10,
-        "number_evaluation_episodes": 10,
-        "checkpoint_episode_freq": 10,
-        "eval_initial_env_episode": 0,
-        "save_hist": False,
-        "enable_random_episodes": True,
-        "number_rollout_workers": 10,
-        "agents": [
-            "ray_ib_sched_default",
-            "mapf",
-            "marr",
-            "sched_twc",
-            "sched_coloran",
-        ],
-    },
-    "hyperparam_opt_mult_slice": {
-        "seed": 10,
-        "seed_test": 15,
-        "channel_class": QuadrigaChannel,
-        "traffic_class": MultSliceTraffic,
-        "mobility_class": SimpleMobility,
-        "root_path": str(getcwd()),
-        "training_epochs": 10,
-        "enable_evaluation": True,
-        "initial_training_episode": 0,
-        "max_training_episodes": 160,
-        "initial_testing_episode": 180,
-        "test_episodes": 20,
-        "episode_evaluation_freq": 10,
-        "number_evaluation_episodes": 20,
-        "checkpoint_episode_freq": 10,
-        "eval_initial_env_episode": 160,
-        "save_hist": False,
-        "enable_random_episodes": True,
-        "number_rollout_workers": 0,
-        "agents": ["ray_ib_sched_hyper_asha"],
-    },
-    "finetune_mult_slice_seq": {
-        "seed": 10,
-        "seed_test": 15,
-        "channel_class": QuadrigaChannelSeq,
-        "traffic_class": MultSliceTraffic,
-        "mobility_class": SimpleMobility,
-        "root_path": str(getcwd()),
-        "training_epochs": 10,
-        "enable_evaluation": True,
-        "initial_training_episode": 20,
-        "max_training_episodes": 100,
-        "initial_testing_episode": 0,
-        "test_episodes": 20,
-        "episode_evaluation_freq": 10,
-        "number_evaluation_episodes": 20,
-        "checkpoint_episode_freq": 10,
-        "eval_initial_env_episode": 0,
-        "save_hist": False,
-        "enable_random_episodes": True,
-        "number_rollout_workers": 10,
-        "agents": [
-            "finetune_ray_ib_sched",
-            "ray_ib_sched_default",
-            "finetune_ray_ib_sched_overfit",
-        ],
-        "number_scenarios": 10,
-        "scenarios_skip_episodes": 100,
-    },
+
+    # "mult_slice": {
+    #     "seed": 10,
+    #     "seed_test": 15,
+    #     "channel_class": QuadrigaChannel,
+    #     "traffic_class": MultSliceTraffic,
+    #     "mobility_class": SimpleMobility,
+    #     "root_path": str(getcwd()),
+    #     "training_epochs": 5,
+    #     "enable_evaluation": True,
+    #     "initial_training_episode": 10,
+    #     "max_training_episodes": 190,
+    #     "initial_testing_episode": 0,
+    #     "test_episodes": 10,
+    #     "episode_evaluation_freq": 10,
+    #     "number_evaluation_episodes": 10,
+    #     "checkpoint_episode_freq": 10,
+    #     "eval_initial_env_episode": 190,
+    #     "save_hist": False,
+    #     "enable_random_episodes": True,
+    #     "number_rollout_workers": 10,
+    #     "agents": [
+    #         "ray_ib_sched_default",
+    #         "sched_twc",
+    #         "sched_coloran",
+    #         "mapf",
+    #         "marr",
+    #     ],
+    # },
+    # "mult_slice_overfit": {
+    #     "seed": 10,
+    #     "seed_test": 15,
+    #     "channel_class": QuadrigaChannel,
+    #     "traffic_class": MultSliceTraffic,
+    #     "mobility_class": SimpleMobility,
+    #     "root_path": str(getcwd()),
+    #     "training_epochs": 100,
+    #     "enable_evaluation": True,
+    #     "initial_training_episode": 0,
+    #     "max_training_episodes": 10,
+    #     "initial_testing_episode": 0,
+    #     "test_episodes": 10,
+    #     "episode_evaluation_freq": 10,
+    #     "number_evaluation_episodes": 10,
+    #     "checkpoint_episode_freq": 10,
+    #     "eval_initial_env_episode": 0,
+    #     "save_hist": False,
+    #     "enable_random_episodes": True,
+    #     "number_rollout_workers": 10,
+    #     "agents": [
+    #         "ray_ib_sched_default",
+    #         "mapf",
+    #         "marr",
+    #         "sched_twc",
+    #         "sched_coloran",
+    #     ],
+    # },
+    # "hyperparam_opt_mult_slice": {
+    #     "seed": 10,
+    #     "seed_test": 15,
+    #     "channel_class": QuadrigaChannel,
+    #     "traffic_class": MultSliceTraffic,
+    #     "mobility_class": SimpleMobility,
+    #     "root_path": str(getcwd()),
+    #     "training_epochs": 10,
+    #     "enable_evaluation": True,
+    #     "initial_training_episode": 0,
+    #     "max_training_episodes": 160,
+    #     "initial_testing_episode": 180,
+    #     "test_episodes": 20,
+    #     "episode_evaluation_freq": 10,
+    #     "number_evaluation_episodes": 20,
+    #     "checkpoint_episode_freq": 10,
+    #     "eval_initial_env_episode": 160,
+    #     "save_hist": False,
+    #     "enable_random_episodes": True,
+    #     "number_rollout_workers": 0,
+    #     "agents": ["ray_ib_sched_hyper_asha"],
+    # },
+    # "finetune_mult_slice_seq": {
+    #     "seed": 10,
+    #     "seed_test": 15,
+    #     "channel_class": QuadrigaChannelSeq,
+    #     "traffic_class": MultSliceTraffic,
+    #     "mobility_class": SimpleMobility,
+    #     "root_path": str(getcwd()),
+    #     "training_epochs": 10,
+    #     "enable_evaluation": True,
+    #     "initial_training_episode": 20,
+    #     "max_training_episodes": 100,
+    #     "initial_testing_episode": 0,
+    #     "test_episodes": 20,
+    #     "episode_evaluation_freq": 10,
+    #     "number_evaluation_episodes": 20,
+    #     "checkpoint_episode_freq": 10,
+    #     "eval_initial_env_episode": 0,
+    #     "save_hist": False,
+    #     "enable_random_episodes": True,
+    #     "number_rollout_workers": 10,
+    #     "agents": [
+    #         "finetune_ray_ib_sched",
+    #         "ray_ib_sched_default",
+    #         "finetune_ray_ib_sched_overfit",
+    #     ],
+    #     "number_scenarios": 10,
+    #     "scenarios_skip_episodes": 100,
+    # },
+
 }
 
 
@@ -423,160 +434,160 @@ def env_creator(env_config, only_env=True):
     else:
         return marl_comm_env, agent
 
+if __name__ == '__main__':
+    for scenario in scenarios.keys():
+        for agent_name in env_config_scenarios[scenario]["agents"]:
+            env_config = env_config_scenarios[scenario].copy()
+            env_config["scenario"] = scenario
+            env_config["agent_class"] = agents[agent_name]["class"]
+            env_config["association_class"] = scenarios[scenario]
+            env_config["rl"] = agents[agent_name]["rl"]
+            enable_finetune = agents[agent_name].get("enable_finetune", False)
+            env_config["enable_finetune"] = enable_finetune
+            if enable_finetune:
+                env_config["base_agent"] = agents[agent_name]["base_agent"]
+                env_config["base_scenario"] = agents[agent_name]["base_scenario"]
+                env_config["load_method"] = agents[agent_name]["load_method"]
 
-for scenario in scenarios.keys():
-    for agent_name in env_config_scenarios[scenario]["agents"]:
-        env_config = env_config_scenarios[scenario].copy()
-        env_config["scenario"] = scenario
-        env_config["agent_class"] = agents[agent_name]["class"]
-        env_config["association_class"] = scenarios[scenario]
-        env_config["rl"] = agents[agent_name]["rl"]
-        enable_finetune = agents[agent_name].get("enable_finetune", False)
-        env_config["enable_finetune"] = enable_finetune
-        if enable_finetune:
-            env_config["base_agent"] = agents[agent_name]["base_agent"]
-            env_config["base_scenario"] = agents[agent_name]["base_scenario"]
-            env_config["load_method"] = agents[agent_name]["load_method"]
-
-        number_scenarios = env_config.get("number_scenarios", 1)
-        for scenario_number in range(number_scenarios):
-            env_config["agent"] = agent_name + f"_{str(scenario_number)}"
-            marl_comm_env, agent = env_creator(env_config, False)  # type: ignore
-            if "ray" in agent_name:
-                param_config_mode = agents[agent_name].get(
-                    "param_config_mode", "default"
-                )
-                param_config_scenario = agents[agent_name].get(
-                    "param_config_scenario", None
-                )
-                param_config_agent = agents[agent_name].get(
-                    "param_config_agent", None
-                )
-                restore = agents[agent_name].get("restore", False)
-                stochastic_policy = agents[agent_name].get(
-                    "stochastic_policy", False
-                )
-                hyper_opt_algo = agents[agent_name].get("hyper_opt_algo", None)
-                hyper_opt_enable = agents[agent_name].get(
-                    "hyper_opt_enable", False
-                )
-                shared_policies = agents[agent_name].get(
-                    "shared_policies", True
-                )
-                agent = RayAgent(
-                    env_creator=env_creator,
-                    env_config=env_config,
-                    debug_mode=agents[agent_name]["debug_mode"],
-                    enable_masks=agents[agent_name]["enable_masks"],
-                    param_config_mode=param_config_mode,
-                    param_config_scenario=param_config_scenario,
-                    param_config_agent=param_config_agent,
-                    restore=restore,
-                    stochastic_policy=stochastic_policy,
-                    hyper_opt_algo=hyper_opt_algo,
-                    hyper_opt_enable=hyper_opt_enable,
-                    shared_policies=shared_policies,
-                    number_rollout_workers=env_config[
-                        "number_rollout_workers"
-                    ],
-                )
-            number_episodes = (
-                marl_comm_env.comm_env.max_number_episodes
-                - env_config["initial_training_episode"]
-            )
-            steps_per_episode = marl_comm_env.comm_env.max_number_steps
-            total_time_steps = (
-                number_episodes
-                * steps_per_episode
-                * env_config["training_epochs"]
-            )
-            if agents[agent_name]["rl"]:
-                if agents[agent_name]["train"]:
-                    # Training
-                    if enable_finetune:
-                        print(
-                            f"Fine-tuning model from Agent {agents[agent_name]['base_agent']} scenario {agents[agent_name]['base_scenario']} on {scenario} scenario"
-                        )
-                        agent.load(
-                            agent_name=agents[agent_name]["base_agent"],
-                            scenario=agents[agent_name]["base_scenario"],
-                            method=agents[agents[agent_name]["base_agent"]][
-                                "load_method"
-                            ],
-                            finetune=True,
-                        )  # Loading base model
-                    print(
-                        f"Training {agent_name} on {scenario} scenario, number {scenario_number}"
+            number_scenarios = env_config.get("number_scenarios", 1)
+            for scenario_number in range(number_scenarios):
+                env_config["agent"] = agent_name + f"_{str(scenario_number)}"
+                marl_comm_env, agent = env_creator(env_config, False)  # type: ignore
+                if "ray" in agent_name:
+                    param_config_mode = agents[agent_name].get(
+                        "param_config_mode", "default"
                     )
-                    agent.train(total_time_steps)
-
-            enable_test = agents[agent_name].get("test", True)
-            enable_base_agent = agents[agent_name].get(
-                "enable_base_agent", False
-            )
-            if enable_test:
-                # Testing
-                agent_load = (
-                    agents[agent_name]["base_agent"]
-                    if enable_base_agent
-                    else env_config["agent"]
+                    param_config_scenario = agents[agent_name].get(
+                        "param_config_scenario", None
+                    )
+                    param_config_agent = agents[agent_name].get(
+                        "param_config_agent", None
+                    )
+                    restore = agents[agent_name].get("restore", False)
+                    stochastic_policy = agents[agent_name].get(
+                        "stochastic_policy", False
+                    )
+                    hyper_opt_algo = agents[agent_name].get("hyper_opt_algo", None)
+                    hyper_opt_enable = agents[agent_name].get(
+                        "hyper_opt_enable", False
+                    )
+                    shared_policies = agents[agent_name].get(
+                        "shared_policies", True
+                    )
+                    agent = RayAgent(
+                        env_creator=env_creator,
+                        env_config=env_config,
+                        debug_mode=agents[agent_name]["debug_mode"],
+                        enable_masks=agents[agent_name]["enable_masks"],
+                        param_config_mode=param_config_mode,
+                        param_config_scenario=param_config_scenario,
+                        param_config_agent=param_config_agent,
+                        restore=restore,
+                        stochastic_policy=stochastic_policy,
+                        hyper_opt_algo=hyper_opt_algo,
+                        hyper_opt_enable=hyper_opt_enable,
+                        shared_policies=shared_policies,
+                        number_rollout_workers=env_config[
+                            "number_rollout_workers"
+                        ],
+                    )
+                number_episodes = (
+                    marl_comm_env.comm_env.max_number_episodes
+                    - env_config["initial_training_episode"]
                 )
-                scenario_load = (
-                    agents[agent_name]["base_scenario"]
-                    if enable_base_agent
-                    else scenario
+                steps_per_episode = marl_comm_env.comm_env.max_number_steps
+                total_time_steps = (
+                    number_episodes
+                    * steps_per_episode
+                    * env_config["training_epochs"]
                 )
                 if agents[agent_name]["rl"]:
-                    agent.load(
-                        agent_load,
-                        scenario_load,
-                        agents[agent_name]["load_method"],
-                    )
-                print(f"Testing {agent_name} on {scenario} scenario")
-                total_test_steps = (
-                    env_config["test_episodes"] * steps_per_episode
-                )
-                marl_comm_env.comm_env.max_number_episodes = (
-                    env_config["initial_testing_episode"]
-                    + env_config["test_episodes"]
-                )
-                marl_comm_env.comm_env.save_hist = (
-                    True  # Save metrics for test
-                )
-                marl_comm_env.comm_env.enable_random_episodes = False
-                obs, _ = marl_comm_env.reset(
-                    seed=env_config["seed_test"],
-                    options={
-                        "initial_episode": env_config[
-                            "initial_testing_episode"
-                        ]
-                    },
-                )
-                for step in tqdm(
-                    np.arange(total_test_steps), desc="Testing..."
-                ):
-                    action = agent.step(obs)
-                    obs, reward, terminated, truncated, info = marl_comm_env.step(action)  # type: ignore
-                    if isinstance(terminated, dict):
-                        terminated = terminated["__all__"]
-                    assert isinstance(
-                        terminated, bool
-                    ), "Terminated must be a boolean"
-                    if terminated:
-                        obs, _ = marl_comm_env.reset()
-            ray.shutdown()
+                    if agents[agent_name]["train"]:
+                        # Training
+                        if enable_finetune:
+                            print(
+                                f"Fine-tuning model from Agent {agents[agent_name]['base_agent']} scenario {agents[agent_name]['base_scenario']} on {scenario} scenario"
+                            )
+                            agent.load(
+                                agent_name=agents[agent_name]["base_agent"],
+                                scenario=agents[agent_name]["base_scenario"],
+                                method=agents[agents[agent_name]["base_agent"]][
+                                    "load_method"
+                                ],
+                                finetune=True,
+                            )  # Loading base model
+                        print(
+                            f"Training {agent_name} on {scenario} scenario, number {scenario_number}"
+                        )
+                        agent.train(total_time_steps)
 
-            # Updating values for next scenario
-            if "number_scenarios" in env_config.keys():
-                env_config["initial_training_episode"] += env_config[
-                    "scenarios_skip_episodes"
-                ]
-                env_config["max_training_episodes"] += env_config[
-                    "scenarios_skip_episodes"
-                ]
-                env_config["initial_testing_episode"] += env_config[
-                    "scenarios_skip_episodes"
-                ]
-                env_config["eval_initial_env_episode"] += env_config[
-                    "scenarios_skip_episodes"
-                ]
+                enable_test = agents[agent_name].get("test", True)
+                enable_base_agent = agents[agent_name].get(
+                    "enable_base_agent", False
+                )
+                if enable_test:
+                    # Testing
+                    agent_load = (
+                        agents[agent_name]["base_agent"]
+                        if enable_base_agent
+                        else env_config["agent"]
+                    )
+                    scenario_load = (
+                        agents[agent_name]["base_scenario"]
+                        if enable_base_agent
+                        else scenario
+                    )
+                    if agents[agent_name]["rl"]:
+                        agent.load(
+                            agent_load,
+                            scenario_load,
+                            agents[agent_name]["load_method"],
+                        )
+                    print(f"Testing {agent_name} on {scenario} scenario")
+                    total_test_steps = (
+                        env_config["test_episodes"] * steps_per_episode
+                    )
+                    marl_comm_env.comm_env.max_number_episodes = (
+                        env_config["initial_testing_episode"]
+                        + env_config["test_episodes"]
+                    )
+                    marl_comm_env.comm_env.save_hist = (
+                        True  # Save metrics for test
+                    )
+                    marl_comm_env.comm_env.enable_random_episodes = False
+                    obs, _ = marl_comm_env.reset(
+                        seed=env_config["seed_test"],
+                        options={
+                            "initial_episode": env_config[
+                                "initial_testing_episode"
+                            ]
+                        },
+                    )
+                    for step in tqdm(
+                        np.arange(total_test_steps), desc="Testing..."
+                    ):
+                        action = agent.step(obs)
+                        obs, reward, terminated, truncated, info = marl_comm_env.step(action)  # type: ignore
+                        if isinstance(terminated, dict):
+                            terminated = terminated["__all__"]
+                        assert isinstance(
+                            terminated, bool
+                        ), "Terminated must be a boolean"
+                        if terminated:
+                            obs, _ = marl_comm_env.reset()
+                ray.shutdown()
+
+                # Updating values for next scenario
+                if "number_scenarios" in env_config.keys():
+                    env_config["initial_training_episode"] += env_config[
+                        "scenarios_skip_episodes"
+                    ]
+                    env_config["max_training_episodes"] += env_config[
+                        "scenarios_skip_episodes"
+                    ]
+                    env_config["initial_testing_episode"] += env_config[
+                        "scenarios_skip_episodes"
+                    ]
+                    env_config["eval_initial_env_episode"] += env_config[
+                        "scenarios_skip_episodes"
+                    ]

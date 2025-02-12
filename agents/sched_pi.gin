@@ -1,0 +1,24 @@
+from agents import util
+import solutions.torch_solutions
+import tasks.rl_tasks
+
+
+# Solution configurations
+torch_solutions.PIFCSolution.act_dim = 5
+torch_solutions.PIFCSolution.hidden_dim = 50
+torch_solutions.PIFCSolution.msg_dim = 40
+torch_solutions.PIFCSolution.pos_em_dim = 10
+torch_solutions.PIFCSolution.num_hidden_layers = 3
+torch_solutions.PIFCSolution.pi_layer_bias = True
+torch_solutions.PIFCSolution.pi_layer_scale = True
+util.create_solution.solution_loader = @torch_solutions.PIFCSolution
+
+
+# Task configurations
+rl_tasks.SchedulingEnvTask.shuffle_on_reset = False
+rl_tasks.SchedulingEnvTask.v = False
+rl_tasks.SchedulingEnvTask.max_number_basestations = 1
+rl_tasks.SchedulingEnvTask.max_number_slices = 5
+rl_tasks.SchedulingEnvTask.max_number_ues = 25
+rl_tasks.SchedulingEnvTask.num_available_rbs = [135]
+util.create_task.task_loader = @rl_tasks.SchedulingEnvTask()
